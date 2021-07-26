@@ -2,23 +2,16 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(
-    Column(
-      children: <Widget>[
-        Text(
-          'Deliver features faster',
-          textDirection: TextDirection.ltr,
+    MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Transferências'),
         ),
-        Text(
-          'Craft beautiful UIs',
-          textDirection: TextDirection.ltr,
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: null,
         ),
-        Expanded(
-          child: FittedBox(
-            fit: BoxFit.contain, // otherwise the logo will be tiny
-            child: const FlutterLogo(),
-          ), //fittedBox
-        ),
-      ], //<Widget>[]
-    ), //Column
+      ),
+    )
   );
 }
