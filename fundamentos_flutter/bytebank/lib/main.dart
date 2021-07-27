@@ -105,9 +105,7 @@ class CampoFormulario extends StatelessWidget {
   }
 }
 
-class ListaTransferencias extends StatelessWidget {
-
-  final List<Transferencia> listaTransferencias = [];
+class ListaTransferenciasState extends State<ListaTransferencias> {
 
   @override
   Widget build(BuildContext context) {
@@ -117,10 +115,10 @@ class ListaTransferencias extends StatelessWidget {
       ),
       body: ListView.builder(
         itemBuilder: (context, posicao) {
-          final Transferencia t = listaTransferencias[posicao];
+          final Transferencia t = widget._listaTransferencias[posicao];
           return ItemTransferencia(t);
         },
-        itemCount: listaTransferencias.length,
+        itemCount: widget._listaTransferencias.length,
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -134,13 +132,26 @@ class ListaTransferencias extends StatelessWidget {
           // receber os dados do Widget `FormularioTransferencia`
           // que é enviado após chamarmos o `Navigator.push`
           transferenciaRecebida.then((t) {
-            debugPrint('Chegouuuu: $t');
+            debugPrint('Chegou do widget FormularioTransferencia: $t');
             if (t != null)
-              listaTransferencias.add(t);
+              setState(() {
+                widget._listaTransferencias.add(t);
+              });
           });
         },
       ),
     );
+  }
+
+}
+
+class ListaTransferencias extends StatefulWidget {
+
+  final List<Transferencia> _listaTransferencias = [];
+
+  @override
+  State<StatefulWidget> createState() {
+    return ListaTransferenciasState();
   }
 }
 
