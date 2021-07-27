@@ -26,59 +26,74 @@ class FormularioTransferencia extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _controladorCampoNumeroConta,
-              style: TextStyle(
-                fontSize: 24.0
-              ),
-              decoration: InputDecoration(
-                labelText: 'Número da conta',
-                hintText: '0000'
-              ),
-              keyboardType: TextInputType.number,
-            ),
+          CampoFormulario(
+            controlador: _controladorCampoNumeroConta,
+            label: 'Número da conta',
+            hint: '0000',
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _controladorCampoValor,
-              style: TextStyle(
-                fontSize: 24.0
-              ),
-              decoration: InputDecoration(
-                labelText: 'Valor da transferência',
-                hintText: '0.00',
-                icon: Icon(Icons.monetization_on)
-              ),
-              keyboardType: TextInputType.numberWithOptions(
-                decimal: true,
-              ),
+          CampoFormulario(
+            controlador: _controladorCampoValor,
+            label: 'Valor da transferência',
+            hint: '0.00',
+            icone: Icons.monetization_on,
+            tipoTeclado: TextInputType.numberWithOptions(
+              decimal: true
             ),
           ),
           ElevatedButton(
-              onPressed: () {
-                debugPrint('Cliquei no botão');
-
-                final double? valorTransferencia = double.tryParse(_controladorCampoValor.text);
-                final int? contaDestino = int.tryParse(_controladorCampoNumeroConta.text);
-
-                // debugPrint('Valor da transferência: ${valorTransferencia}');
-                // debugPrint('Conta destino: ${_controladorCampoNumeroConta.text}');
-
-                if (valorTransferencia != null && contaDestino != null) {
-                  final Transferencia transferencia = Transferencia(valorTransferencia, contaDestino);
-                  debugPrint(transferencia.toString());
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(transferencia.toString()))
-                  );
-                }
-              },
+              onPressed: () => criarTransferencia(context),
               child: Text('Confirmar')
           )
         ],
+      ),
+    );
+  }
+
+  void criarTransferencia(BuildContext context) {
+    debugPrint('Cliquei no botão');
+
+    final double? valorTransferencia = double.tryParse(_controladorCampoValor.text);
+    final int? contaDestino = int.tryParse(_controladorCampoNumeroConta.text);
+
+    // debugPrint('Valor da transferência: ${valorTransferencia}');
+    // debugPrint('Conta destino: ${_controladorCampoNumeroConta.text}');
+
+    if (valorTransferencia != null && contaDestino != null) {
+      final Transferencia transferencia = Transferencia(valorTransferencia, contaDestino);
+      debugPrint(transferencia.toString());
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(transferencia.toString()))
+      );
+    }
+  }
+}
+
+class CampoFormulario extends StatelessWidget {
+
+  final TextEditingController? controlador;
+  final String? label;
+  final String? hint;
+  final TextInputType? tipoTeclado;
+  final IconData? icone;
+
+  CampoFormulario({this.controlador, this.label, this.hint, this.tipoTeclado, this.icone});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextField(
+        controller: controlador,
+        style: TextStyle(
+            fontSize: 24.0
+        ),
+        decoration: InputDecoration(
+            labelText: label,
+            hintText: hint,
+            icon: icone != null ? Icon(icone) : null,
+        ),
+        keyboardType: tipoTeclado != null ? tipoTeclado : TextInputType.number,
       ),
     );
   }
