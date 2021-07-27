@@ -13,7 +13,7 @@ class Bytebank extends StatelessWidget {
   }
 }
 
-class FormularioTransferencia extends StatelessWidget {
+class FormularioTransferenciaState extends State<FormularioTransferencia> {
 
   final _controladorCampoNumeroConta = TextEditingController();
   final _controladorCampoValor = TextEditingController();
@@ -22,7 +22,7 @@ class FormularioTransferencia extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Nova Transferência')
+          title: Text('Nova Transferência')
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -38,7 +38,7 @@ class FormularioTransferencia extends StatelessWidget {
               hint: '0.00',
               icone: Icons.monetization_on,
               tipoTeclado: TextInputType.numberWithOptions(
-                decimal: true
+                  decimal: true
               ),
             ),
             ElevatedButton(
@@ -58,22 +58,32 @@ class FormularioTransferencia extends StatelessWidget {
   Transferencia? _criarTransferencia(BuildContext context) {
     debugPrint('Cliquei no botão');
 
-    final double? valorTransferencia = double.tryParse(_controladorCampoValor.text);
+    final double? valorTransferencia = double.tryParse(
+        _controladorCampoValor.text);
     final int? contaDestino = int.tryParse(_controladorCampoNumeroConta.text);
 
     // debugPrint('Valor da transferência: ${valorTransferencia}');
     // debugPrint('Conta destino: ${_controladorCampoNumeroConta.text}');
 
     if (valorTransferencia != null && contaDestino != null) {
-      final Transferencia transferencia = Transferencia(valorTransferencia, contaDestino);
+      final Transferencia transferencia = Transferencia(
+          valorTransferencia, contaDestino);
       debugPrint(transferencia.toString());
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(transferencia.toString()))
+          SnackBar(content: Text(transferencia.toString()))
       );
 
       return transferencia;
     }
+  }
+}
+
+class FormularioTransferencia extends StatefulWidget {
+
+  @override
+  State<StatefulWidget> createState() {
+    return FormularioTransferenciaState();
   }
 }
 
@@ -87,6 +97,10 @@ class CampoFormulario extends StatelessWidget {
 
   CampoFormulario({this.controlador, this.label, this.hint, this.tipoTeclado, this.icone});
 
+  /*
+    Em um widget Stateless o método build é executado sempre que
+    o widget aparece (após transições de tela, botão voltar, etc).
+   */
   @override
   Widget build(BuildContext context) {
     return Padding(
