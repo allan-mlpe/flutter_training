@@ -106,20 +106,21 @@ class CampoFormulario extends StatelessWidget {
 }
 
 class ListaTransferencias extends StatelessWidget {
+
+  final List<Transferencia> listaTransferencias = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Transferências'),
       ),
-      body: Column(
-        children: <Widget>[
-          ItemTransferencia(Transferencia(100.0, 1000)),
-          ItemTransferencia(Transferencia(197.9, 1000)),
-          ItemTransferencia(Transferencia(1150, 1234)),
-          ItemTransferencia(Transferencia(244, 1000)),
-          ItemTransferencia(Transferencia(673.97, 23121)),
-        ],
+      body: ListView.builder(
+        itemBuilder: (context, posicao) {
+          final Transferencia t = listaTransferencias[posicao];
+          return ItemTransferencia(t);
+        },
+        itemCount: listaTransferencias.length,
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -134,6 +135,8 @@ class ListaTransferencias extends StatelessWidget {
           // que é enviado após chamarmos o `Navigator.push`
           transferenciaRecebida.then((t) {
             debugPrint('Chegouuuu: $t');
+            if (t != null)
+              listaTransferencias.add(t);
           });
         },
       ),
