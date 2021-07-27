@@ -1,33 +1,86 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(
-    MaterialApp(
+void main() => runApp(Bytebank());
+
+class Bytebank extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
       home: Scaffold(
-        body: ListaTransferencias(),
-        appBar: AppBar(
-          title: Text('Transferências'),
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: null,
-        ),
+        body: FormularioTransferencia(),
       ),
-    )
-  );
+    );
+  }
+}
+
+class FormularioTransferencia extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Nova Transferência')
+      ),
+      body: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              style: TextStyle(
+                fontSize: 24.0
+              ),
+              decoration: InputDecoration(
+                labelText: 'Número da conta',
+                hintText: '0000'
+              ),
+              keyboardType: TextInputType.number,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              style: TextStyle(
+                fontSize: 24.0
+              ),
+              decoration: InputDecoration(
+                labelText: 'Valor da transferência',
+                hintText: '0.00',
+                icon: Icon(Icons.monetization_on)
+              ),
+              keyboardType: TextInputType.numberWithOptions(
+                decimal: true,
+              ),
+            ),
+          ),
+          ElevatedButton(
+              onPressed: null,
+              child: Text('Confirmar')
+          )
+        ],
+      ),
+    );
+  }
 }
 
 class ListaTransferencias extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        ItemTransferencia(Transferencia(100.0, 1000)),
-        ItemTransferencia(Transferencia(197.9, 1000)),
-        ItemTransferencia(Transferencia(1150, 1234)),
-        ItemTransferencia(Transferencia(244, 1000)),
-        ItemTransferencia(Transferencia(673.97, 23121)),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Transferências'),
+      ),
+      body: Column(
+        children: <Widget>[
+          ItemTransferencia(Transferencia(100.0, 1000)),
+          ItemTransferencia(Transferencia(197.9, 1000)),
+          ItemTransferencia(Transferencia(1150, 1234)),
+          ItemTransferencia(Transferencia(244, 1000)),
+          ItemTransferencia(Transferencia(673.97, 23121)),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: null,
+      ),
     );
   }
 }
