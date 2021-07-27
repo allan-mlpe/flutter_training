@@ -4,24 +4,7 @@ void main() {
   runApp(
     MaterialApp(
       home: Scaffold(
-        body: Column(
-          children: <Widget>[
-            Card(
-              child: ListTile(
-                leading: Icon(Icons.monetization_on),
-                title: Text('100,00'),
-                subtitle: Text('1000'),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                leading: Icon(Icons.monetization_on),
-                title: Text('2800,00'),
-                subtitle: Text('1000'),
-              ),
-            )
-          ],
-        ),
+        body: ListaTransferencias(),
         appBar: AppBar(
           title: Text('Transferências'),
         ),
@@ -32,4 +15,43 @@ void main() {
       ),
     )
   );
+}
+
+class ListaTransferencias extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        ItemTransferencia(Transferencia(100.0, 1000)),
+        ItemTransferencia(Transferencia(197.9, 1000)),
+        ItemTransferencia(Transferencia(1150, 1234)),
+        ItemTransferencia(Transferencia(244, 1000)),
+        ItemTransferencia(Transferencia(673.97, 23121)),
+      ],
+    );
+  }
+}
+
+class ItemTransferencia extends StatelessWidget {
+  final Transferencia _transferencia;
+
+  ItemTransferencia(this._transferencia);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        leading: Icon(Icons.monetization_on),
+        title: Text(_transferencia.valor.toString()),
+        subtitle: Text(_transferencia.numeroConta.toString()),
+      ),
+    );
+  }
+}
+
+class Transferencia {
+  final double valor;
+  final int numeroConta;
+
+  Transferencia(this.valor, this.numeroConta);
 }
