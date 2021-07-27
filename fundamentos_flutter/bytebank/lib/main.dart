@@ -41,7 +41,11 @@ class FormularioTransferencia extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-              onPressed: () => criarTransferencia(context),
+              onPressed: () {
+                final transferenciaCriada = _criarTransferencia(context);
+
+                Navigator.pop(context, transferenciaCriada);
+              },
               child: Text('Confirmar')
           )
         ],
@@ -49,7 +53,7 @@ class FormularioTransferencia extends StatelessWidget {
     );
   }
 
-  void criarTransferencia(BuildContext context) {
+  Transferencia? _criarTransferencia(BuildContext context) {
     debugPrint('Cliquei no botão');
 
     final double? valorTransferencia = double.tryParse(_controladorCampoValor.text);
@@ -65,6 +69,8 @@ class FormularioTransferencia extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(transferencia.toString()))
       );
+
+      return transferencia;
     }
   }
 }
@@ -118,10 +124,17 @@ class ListaTransferencias extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.push(
+          final Future<Transferencia?> transferenciaRecebida = Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => FormularioTransferencia())
           );
+
+          // esse bloco será executado apenas quando
+          // receber os dados do Widget `FormularioTransferencia`
+          // que é enviado após chamarmos o `Navigator.push`
+          transferenciaRecebida.then((t) {
+            debugPrint('Chegouuuu: $t');
+          });
         },
       ),
     );
