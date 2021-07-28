@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:persistencia_flutter/screens/formulario_novo_contato.dart';
 
 const String TITULO_LISTA_CONTATOS = 'Contatos';
 
@@ -22,8 +23,16 @@ class ListaContatos extends StatelessWidget {
               ),
               subtitle: Text('1000'),
             ),
-          )
+          ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => FormularioNovoContato())
+          );
+        },
       ),
     );
   }
