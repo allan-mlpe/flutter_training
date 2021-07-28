@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 
 import 'formulario_transferencia.dart';
 
+const String CABECALHO_TELA = 'Transferências';
+
 class ListaTransferenciasState extends State<ListaTransferencias> {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Transferências'),
+        title: Text(CABECALHO_TELA),
       ),
       body: ListView.builder(
         itemBuilder: (context, posicao) {

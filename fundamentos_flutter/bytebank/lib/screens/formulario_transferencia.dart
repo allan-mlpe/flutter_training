@@ -2,6 +2,16 @@ import 'package:bytebank/components/campo_formulario.dart';
 import 'package:bytebank/models/transferencia.dart';
 import 'package:flutter/material.dart';
 
+const String CABECALHO_TELA = 'Nova Transferência';
+
+const String LABEL_NUMERO_CONTA = 'Número da conta';
+const String HINT_NUMERO_CONTA = '0000';
+
+const String LABEL_VALOR_TRANSFERENCIA = 'Valor da transferência';
+const String HINT_VALOR_TRANSFERENCIA = '0.00';
+
+const String TEXTO_BOTAO_CONFIRMAR = 'Confirmar';
+
 class FormularioTransferenciaState extends State<FormularioTransferencia> {
 
   final _controladorCampoNumeroConta = TextEditingController();
@@ -11,20 +21,20 @@ class FormularioTransferenciaState extends State<FormularioTransferencia> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text('Nova Transferência')
+          title: Text(CABECALHO_TELA)
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             CampoFormulario(
               controlador: _controladorCampoNumeroConta,
-              label: 'Número da conta',
-              hint: '0000',
+              label: LABEL_NUMERO_CONTA,
+              hint: HINT_NUMERO_CONTA,
             ),
             CampoFormulario(
               controlador: _controladorCampoValor,
-              label: 'Valor da transferência',
-              hint: '0.00',
+              label: LABEL_VALOR_TRANSFERENCIA,
+              hint: HINT_VALOR_TRANSFERENCIA,
               icone: Icons.monetization_on,
               tipoTeclado: TextInputType.numberWithOptions(
                   decimal: true
@@ -36,7 +46,7 @@ class FormularioTransferenciaState extends State<FormularioTransferencia> {
 
                   Navigator.pop(context, transferenciaCriada);
                 },
-                child: Text('Confirmar')
+                child: Text(TEXTO_BOTAO_CONFIRMAR)
             )
           ],
         ),
