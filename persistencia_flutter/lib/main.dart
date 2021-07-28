@@ -13,6 +13,11 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text('Bytebank'),
         ),
+        body: Column(
+          children: <Widget>[
+            Image.asset('images/bytebank_logo.png')
+          ],
+        ),
       ),
     );
   }
