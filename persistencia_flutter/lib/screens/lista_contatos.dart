@@ -31,7 +31,7 @@ class ListaContatos extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => FormularioNovoContato())
-          );
+          ).then((contato) => debugPrint('Contato vindo do formulário: ${contato.toString()}'));
         },
       ),
     );
