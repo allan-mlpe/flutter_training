@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:persistencia_flutter/screens/dashboard.dart';
-import 'package:persistencia_flutter/screens/lista_contatos.dart';
 
 void main() {
   runApp(BytebankApp());
@@ -19,7 +18,7 @@ class BytebankApp extends StatelessWidget {
           textTheme: ButtonTextTheme.primary,
         ),
       ),
-      home: ListaContatos(),
+      home: Dashboard(),
     );
   }
 }
