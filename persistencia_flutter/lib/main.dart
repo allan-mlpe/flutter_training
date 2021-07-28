@@ -1,32 +1,62 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(BytebankApp());
 }
 
-class MyApp extends StatelessWidget {
+class BytebankApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: Colors.green[900]
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Bytebank'),
+        primaryColor: Colors.green[900],
+        accentColor: Colors.blueAccent[700],
+        buttonTheme: ButtonThemeData(
+          buttonColor: Colors.blueAccent[700],
+          textTheme: ButtonTextTheme.primary,
         ),
-        body: Column(
+      ),
+      home: Dashboard(),
+    );
+  }
+}
+
+class Dashboard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Bytebank'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Image.asset('images/bytebank_logo.png'),
             Container(
-              color: Colors.green,
-              height: 120,
-              width: 180,
+              color: Theme.of(context).primaryColor,
+              height: 100,
+              width: 150,
+              padding: EdgeInsets.all(8.0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Icon(Icons.people),
-                  Text('Contatos')
+                  Icon(
+                    Icons.people,
+                    color: Colors.white,
+                    size: 24.0,
+                  ),
+                  Text(
+                    'Contatos',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.0
+                    ),
+                  )
                 ],
               ),
             )
@@ -35,4 +65,5 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+
 }
