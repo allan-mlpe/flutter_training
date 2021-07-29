@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:persistencia_flutter/components/loading.dart';
-import 'package:persistencia_flutter/database/app_database.dart';
+import 'package:persistencia_flutter/database/dao/contato_dao.dart';
 import 'package:persistencia_flutter/models/contato.dart';
 import 'package:persistencia_flutter/screens/formulario_novo_contato.dart';
 
@@ -13,6 +13,9 @@ class ListaContatos extends StatefulWidget {
 }
 
 class _ListaContatosState extends State<ListaContatos> {
+
+  final ContatoDao _dao = ContatoDao();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +24,7 @@ class _ListaContatosState extends State<ListaContatos> {
       ),
       body: FutureBuilder<List<Contato>>(
         initialData: [],
-        future: buscarContatos(),
+        future: _dao.buscarContatos(),
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
 
           Widget widget = Text('Erro desconhecido.');

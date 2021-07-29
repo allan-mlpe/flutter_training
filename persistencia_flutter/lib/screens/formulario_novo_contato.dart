@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:persistencia_flutter/database/app_database.dart';
+import 'package:persistencia_flutter/database/dao/contato_dao.dart';
 import 'package:persistencia_flutter/models/contato.dart';
 
 const String TITULO_FORMULARIO_NOVO_CONTATO = 'Novo Contato';
@@ -21,6 +21,7 @@ class _FormularioNovoContatoState extends State<FormularioNovoContato> {
 
   final TextEditingController _controladorNomeContato = TextEditingController();
   final TextEditingController _controladorNumeroConta = TextEditingController();
+  final ContatoDao _dao = ContatoDao();
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +78,7 @@ class _FormularioNovoContatoState extends State<FormularioNovoContato> {
     if (nomeContato != '' && numeroConta != null) {
       final Contato contato = Contato(0, nomeContato, numeroConta);
       
-      salvarContato(contato).then((value) => Navigator.pop(context));
+      _dao.salvarContato(contato).then((value) => Navigator.pop(context));
     }
   }
 }
