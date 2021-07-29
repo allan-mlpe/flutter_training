@@ -78,7 +78,7 @@ class _FormularioNovoContatoState extends State<FormularioNovoContato> {
     String nomeContato = _controladorNomeContato.text;
     int? numeroConta = int.tryParse(_controladorNumeroConta.text);
 
-    if (nomeContato != null && numeroConta != null)
-      return Contato(nomeContato, numeroConta);
+    if (nomeContato != '' && numeroConta != null)
+      return Contato(0, nomeContato, numeroConta);
   }
 }
