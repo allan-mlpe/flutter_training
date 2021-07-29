@@ -36,3 +36,11 @@ dependencies:
   path:
 ...
 ```
+
+- Limpar banco de dados: uma das estratégias que podemos utilizar para limpar o banco de dados é usar a linha de código abaixo. Contudo, é recomendável apenas usá-la em ambientes de desenvolvimento e testes.
+```dart
+// app_database.dart
+...
+onDowngrade: onDatabaseDowngradeDelete,
+...
+```
