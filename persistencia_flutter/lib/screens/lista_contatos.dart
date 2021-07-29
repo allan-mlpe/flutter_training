@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:persistencia_flutter/components/loading.dart';
 import 'package:persistencia_flutter/database/app_database.dart';
 import 'package:persistencia_flutter/models/contato.dart';
 import 'package:persistencia_flutter/screens/formulario_novo_contato.dart';
@@ -17,14 +18,28 @@ class ListaContatos extends StatelessWidget {
         initialData: [],
         future: buscarContatos(),
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
-          final List<Contato> listaContatos = snapshot.data;
-          return ListView.builder(
-            itemBuilder: (context, index) {
-              final Contato contato = listaContatos[index];
-              return _CardContato(contato);
-            },
-            itemCount: listaContatos.length,
-          );
+          
+          Widget widget = Text('Erro desconhecido.');
+          
+          switch(snapshot.connectionState) {
+            case ConnectionState.active:
+            case ConnectionState.none:
+              break;
+            case ConnectionState.waiting:
+              widget = Loading();
+              break;
+            case ConnectionState.done:
+              final List<Contato> listaContatos = snapshot.data;
+              widget = ListView.builder(
+                itemBuilder: (context, index) {
+                  final Contato contato = listaContatos[index];
+                  return _CardContato(contato);
+                },
+                itemCount: listaContatos.length,
+              );
+              break;
+          }
+          return widget;
         },
       ),
       floatingActionButton: FloatingActionButton(
