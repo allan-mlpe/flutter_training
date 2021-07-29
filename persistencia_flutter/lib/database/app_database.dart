@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:persistencia_flutter/models/contato.dart';
 import 'package:sqflite/sqflite.dart';
 
-Future<Database> createDatabase(){
+Future<Database> criarBancoDeDados(){
   // `getDatabasePath` retorna um Future, por isso usamos o `then`
   return getDatabasesPath().then((dbPath){
     final String path = join(dbPath, 'bytebank.db');
@@ -15,8 +16,8 @@ Future<Database> createDatabase(){
   });
 }
 
-Future<int> save(Contato contato) {
-  return createDatabase().then((db) {
+Future<int> salvarContato(Contato contato) {
+  return criarBancoDeDados().then((db) {
     final Map<String, dynamic> contatoMap = Map();
     contatoMap['nome'] = contato.nome;
     contatoMap['numero_conta'] = contato.numeroConta;
@@ -24,15 +25,16 @@ Future<int> save(Contato contato) {
   });
 }
 
-Future<List<Contato>> findAll() {
-  return createDatabase().then((db) {
+Future<List<Contato>> buscarContatos() {
+  return criarBancoDeDados().then((db) {
     return db.query('contatos').then((maps) {
       final List<Contato> contatos = [];
       for (Map<String, dynamic> map in maps) {
+        debugPrint(map.toString());
         final Contato contato = Contato(
           map['id'],
-          map['name'],
-          map['account_number'],
+          map['nome'],
+          map['numero_conta'],
         );
         contatos.add(contato);
       }

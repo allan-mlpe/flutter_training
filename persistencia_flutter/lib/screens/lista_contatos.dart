@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:persistencia_flutter/database/app_database.dart';
 import 'package:persistencia_flutter/models/contato.dart';
 import 'package:persistencia_flutter/screens/formulario_novo_contato.dart';
 
@@ -6,20 +7,24 @@ const String TITULO_LISTA_CONTATOS = 'Contatos';
 
 class ListaContatos extends StatelessWidget {
 
-  final List<Contato> listaContatos = [];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(TITULO_LISTA_CONTATOS),
       ),
-      body: ListView.builder(
-        itemBuilder: (BuildContext context, int index) {
-          final Contato contato = listaContatos[index];
-          return _CardContato(contato);
+      body: FutureBuilder(
+        future: buscarContatos(),
+        builder: (context, AsyncSnapshot<dynamic> snapshot) {
+          final List<Contato> listaContatos = snapshot.data;
+          return ListView.builder(
+            itemBuilder: (context, index) {
+              final Contato contato = listaContatos[index];
+              return _CardContato(contato);
+            },
+            itemCount: listaContatos.length,
+          );
         },
-        itemCount: listaContatos.length,
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
