@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:persistencia_flutter/database/app_database.dart';
 import 'package:persistencia_flutter/models/contato.dart';
 
 const String TITULO_FORMULARIO_NOVO_CONTATO = 'Novo Contato';
@@ -58,12 +59,7 @@ class _FormularioNovoContatoState extends State<FormularioNovoContato> {
               child: SizedBox(
                 width: double.maxFinite,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Contato? contato = _criarContato();
-
-                    if (contato != null)
-                      Navigator.pop(context, contato);
-                  },
+                  onPressed: () => _criarContato(),
                   child: Text(TITULO_BOTAO_CADASTRAR),
                 ),
               ),
@@ -74,11 +70,14 @@ class _FormularioNovoContatoState extends State<FormularioNovoContato> {
     );
   }
 
-  Contato? _criarContato() {
+  void _criarContato() {
     String nomeContato = _controladorNomeContato.text;
     int? numeroConta = int.tryParse(_controladorNumeroConta.text);
 
-    if (nomeContato != '' && numeroConta != null)
-      return Contato(0, nomeContato, numeroConta);
+    if (nomeContato != '' && numeroConta != null) {
+      final Contato contato = Contato(0, nomeContato, numeroConta);
+      
+      salvarContato(contato).then((value) => Navigator.pop(context));
+    }
   }
 }

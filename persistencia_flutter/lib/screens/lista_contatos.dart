@@ -6,8 +6,13 @@ import 'package:persistencia_flutter/screens/formulario_novo_contato.dart';
 
 const String TITULO_LISTA_CONTATOS = 'Contatos';
 
-class ListaContatos extends StatelessWidget {
+class ListaContatos extends StatefulWidget {
 
+  @override
+  _ListaContatosState createState() => _ListaContatosState();
+}
+
+class _ListaContatosState extends State<ListaContatos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,9 +23,9 @@ class ListaContatos extends StatelessWidget {
         initialData: [],
         future: buscarContatos(),
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
-          
+
           Widget widget = Text('Erro desconhecido.');
-          
+
           switch(snapshot.connectionState) {
             case ConnectionState.active:
             case ConnectionState.none:
@@ -47,7 +52,7 @@ class ListaContatos extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => FormularioNovoContato())
-          ).then((contato) => debugPrint('Contato vindo do formulário: ${contato.toString()}'));
+          ).then((value) => setState( () {}));
         },
       ),
     );
