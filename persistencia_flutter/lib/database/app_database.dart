@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:persistencia_flutter/models/contato.dart';
 import 'package:sqflite/sqflite.dart';
@@ -30,7 +29,6 @@ Future<List<Contato>> buscarContatos() {
     return db.query('contatos').then((maps) {
       final List<Contato> contatos = [];
       for (Map<String, dynamic> map in maps) {
-        debugPrint(map.toString());
         final Contato contato = Contato(
           map['id'],
           map['nome'],

@@ -13,7 +13,8 @@ class ListaContatos extends StatelessWidget {
       appBar: AppBar(
         title: Text(TITULO_LISTA_CONTATOS),
       ),
-      body: FutureBuilder(
+      body: FutureBuilder<List<Contato>>(
+        initialData: [],
         future: buscarContatos(),
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
           final List<Contato> listaContatos = snapshot.data;
