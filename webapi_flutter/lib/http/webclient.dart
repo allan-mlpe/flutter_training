@@ -34,7 +34,8 @@ Future<List<Transferencia>> buscarTransferencias() async {
   ]);
 
   var response =
-    await client.get(Uri.parse('http://192.168.0.19:8080/transactions'));
+    await client.get(Uri.parse('http://192.168.0.19:8080/transactions'))
+        .timeout(Duration(seconds: 5)); // adiciona timeout de 5s
 
   final List<dynamic> decodeJson = jsonDecode(response.body);
   final List<Transferencia> transferencias = [];

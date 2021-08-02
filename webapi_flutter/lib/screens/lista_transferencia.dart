@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webapi_flutter/components/loading.dart';
+import 'package:webapi_flutter/components/mensagem_centralizada.dart';
 import 'package:webapi_flutter/http/webclient.dart';
-import 'package:webapi_flutter/models/contato.dart';
 import 'package:webapi_flutter/models/transferencia.dart';
 
 class ListaTransferencia extends StatelessWidget {
@@ -15,25 +15,35 @@ class ListaTransferencia extends StatelessWidget {
       body: FutureBuilder<List<Transferencia>>(
         future: buscarTransferencias(),
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
-          switch(snapshot.connectionState) {
-            case ConnectionState.none:
-            case ConnectionState.active:
-              break;
-            case ConnectionState.waiting:
-              return Loading();
-            case ConnectionState.done:
-              final List<Transferencia> transferencias = snapshot.data;
 
-              return ListView.builder(
-                itemCount: transferencias.length,
-                itemBuilder: (context, indice) {
-                  final Transferencia transferencia = transferencias[indice];
-                  return _ItemTransferencia(transferencia);
-                },
-              );
+          if (snapshot.hasData) {
+            switch(snapshot.connectionState) {
+              case ConnectionState.none:
+              case ConnectionState.active:
+                break;
+              case ConnectionState.waiting:
+                return Loading();
+              case ConnectionState.done:
+                final List<Transferencia> transferencias = snapshot.data;
+
+                if (transferencias.isNotEmpty) {
+                  return ListView.builder(
+                    itemCount: transferencias.length,
+                    itemBuilder: (context, indice) {
+                      final Transferencia transferencia = transferencias[indice];
+                      return _ItemTransferencia(transferencia);
+                    },
+                  );
+                }
+
+                return MensagemCentralizada(
+                  'Nenhuma transação encontrada',
+                  icone: Icons.warning,
+                );
+            }
           }
 
-          return Text('Erro desconhecido');
+          return MensagemCentralizada('Erro desconhecido');
         },
       ),
     );
