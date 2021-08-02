@@ -7,8 +7,6 @@ import 'models/contato.dart';
 
 void main() {
   runApp(BytebankApp());
-  salvarTransferencia(Transferencia(2000, Contato(0, 'Allan', 1000)));
-  //buscarTransferencias();
 }
 
 class BytebankApp extends StatelessWidget {

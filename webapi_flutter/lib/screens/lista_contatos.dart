@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:webapi_flutter/components/loading.dart';
 import 'package:webapi_flutter/database/dao/contato_dao.dart';
 import 'package:webapi_flutter/models/contato.dart';
+import 'package:webapi_flutter/screens/formulario_nova_transferencia.dart';
 import 'package:webapi_flutter/screens/formulario_novo_contato.dart';
 
 const String TITULO_LISTA_CONTATOS = 'Contatos';
@@ -41,7 +42,12 @@ class _ListaContatosState extends State<ListaContatos> {
               widget = ListView.builder(
                 itemBuilder: (context, index) {
                   final Contato contato = listaContatos[index];
-                  return _CardContato(contato);
+                  return _CardContato(
+                    contato,
+                    onClick: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            FormularioNovaTransferencia(contato))),
+                  );
                 },
                 itemCount: listaContatos.length,
               );
@@ -64,8 +70,9 @@ class _ListaContatosState extends State<ListaContatos> {
 
 class _CardContato extends StatelessWidget {
   final Contato contato;
+  final Function onClick;
 
-  const _CardContato(this.contato);
+  const _CardContato(this.contato, {required this.onClick});
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +85,7 @@ class _CardContato extends StatelessWidget {
             )
         ),
         subtitle: Text(contato.numeroConta.toString()),
+        onTap: () => onClick(),
       ),
     );
   }

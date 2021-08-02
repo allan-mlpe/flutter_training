@@ -69,7 +69,7 @@ class _ItemTransferencia extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-          '${transferencia.contato.numeroConta}',
+          '${transferencia.contato.numeroConta} - ${transferencia.contato.nome}',
           style: TextStyle(
             fontSize: 16.0
           ),
