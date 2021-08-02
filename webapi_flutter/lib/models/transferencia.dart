@@ -17,4 +17,9 @@ class Transferencia {
   Transferencia.fromJson(Map<String, dynamic> json) :
       valor = json['value'],
       contato = Contato.fromJson(json['contact']);
+
+  toJson() => {
+    'value': valor,
+    'contact': contato.toJson()
+  };
 }

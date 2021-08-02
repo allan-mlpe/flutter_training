@@ -14,4 +14,9 @@ class Contato {
       id = json['id'],
       nome = json['name'],
       numeroConta = json['accountNumber'];
+
+  toJson() => {
+    'name': nome,
+    'accountNumber': numeroConta
+  };
 }

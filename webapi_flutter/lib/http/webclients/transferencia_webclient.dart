@@ -24,8 +24,7 @@ class TransferenciaWebClient {
 
     // iteramos sobre a lista de JSON para fazer as conversões dos objetos
     for(Map<String, dynamic> transferenciaJson in decodeJson) {
-      Transferencia transferencia =
-        _converterMapParaTransferencia(transferenciaJson);
+      Transferencia transferencia = Transferencia.fromJson(transferenciaJson);
 
       transferencias.add(transferencia);
     }
@@ -38,7 +37,7 @@ class TransferenciaWebClient {
       LoggingInterceptor()
     ]);
 
-    Map<String, dynamic> transferenciaMap = _converterTransferenciaParaMap(transferencia);
+    Map<String, dynamic> transferenciaMap = transferencia.toJson();
 
     final String payloadJson = jsonEncode(transferenciaMap);
 
@@ -52,21 +51,6 @@ class TransferenciaWebClient {
 
     final Map<String, dynamic> mapaResposta = jsonDecode(response.body);
 
-    return _converterMapParaTransferencia(mapaResposta);
-  }
-
-  Transferencia _converterMapParaTransferencia(Map<String, dynamic> transferenciaJson) {
-    return Transferencia.fromJson(transferenciaJson);
-  }
-
-  Map<String, dynamic> _converterTransferenciaParaMap(Transferencia transferencia) {
-    final Map<String, dynamic> transferenciaMap = {
-      'value': transferencia.valor,
-      'contact': {
-        'name': transferencia.contato.nome,
-        'accountNumber': transferencia.contato.numeroConta
-      }
-    };
-    return transferenciaMap;
+    return Transferencia.fromJson(mapaResposta);
   }
 }
