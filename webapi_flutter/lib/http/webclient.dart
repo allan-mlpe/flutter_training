@@ -28,12 +28,13 @@ class LoggingInterceptor implements InterceptorContract {
 
 }
 
-void  buscarTransferencias() async {
+Future<List<Transferencia>> buscarTransferencias() async {
   Client client = InterceptedClient.build(interceptors: [
     LoggingInterceptor(),
   ]);
 
-  var response = await client.get(Uri.parse('http://192.168.0.19:8080/transactions'));
+  var response =
+    await client.get(Uri.parse('http://192.168.0.19:8080/transactions'));
 
   final List<dynamic> decodeJson = jsonDecode(response.body);
   final List<Transferencia> transferencias = [];
@@ -52,11 +53,8 @@ void  buscarTransferencias() async {
       contato
     );
 
-    final String js = jsonEncode(contato);
-
     transferencias.add(transferencia);
   }
 
-
-  print(response.body);
+  return transferencias;
 }
