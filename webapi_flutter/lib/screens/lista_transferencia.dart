@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:webapi_flutter/components/loading.dart';
 import 'package:webapi_flutter/components/mensagem_centralizada.dart';
-import 'package:webapi_flutter/http/webclient.dart';
+import 'package:webapi_flutter/http/webclients/transferencia_webclient.dart';
 import 'package:webapi_flutter/models/transferencia.dart';
 
 class ListaTransferencia extends StatelessWidget {
+
+  final TransferenciaWebClient _client = TransferenciaWebClient();
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,7 @@ class ListaTransferencia extends StatelessWidget {
         title: Text('Transferências'),
       ),
       body: FutureBuilder<List<Transferencia>>(
-        future: buscarTransferencias(),
+        future: _client.buscarTransferencias(),
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
 
           if (snapshot.hasData) {

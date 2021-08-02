@@ -13,4 +13,8 @@ class Transferencia {
   String toString() {
     return 'Transferencia{valor: $valor, contact: $contato}';
   }
+
+  Transferencia.fromJson(Map<String, dynamic> json) :
+      valor = json['value'],
+      contato = Contato.fromJson(json['contact']);
 }

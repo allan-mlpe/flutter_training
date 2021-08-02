@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:webapi_flutter/http/webclient.dart';
+import 'package:webapi_flutter/http/webclients/transferencia_webclient.dart';
 import 'package:webapi_flutter/models/contato.dart';
 import 'package:webapi_flutter/models/transferencia.dart';
 
@@ -14,6 +14,7 @@ class FormularioNovaTransferencia extends StatefulWidget {
 
 class _FormularioNovaTransferenciaState extends State<FormularioNovaTransferencia> {
   final TextEditingController _valueController = TextEditingController();
+  final TransferenciaWebClient _client = TransferenciaWebClient();
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +80,7 @@ class _FormularioNovaTransferenciaState extends State<FormularioNovaTransferenci
   }
 
   void _salvarTransferenciaENavegarParaLista(Transferencia transferenciaCriada, BuildContext context) {
-    salvarTransferencia(transferenciaCriada)
+    _client.salvarTransferencia(transferenciaCriada)
         .then((transferencia) => {
               if (transferencia != null)
                 {Navigator.pop(context)}
