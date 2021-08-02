@@ -15,17 +15,16 @@ class ListaTransferencia extends StatelessWidget {
         title: Text('Transferências'),
       ),
       body: FutureBuilder<List<Transferencia>>(
-        future: _client.buscarTransferencias(),
+        future: Future.delayed(Duration(seconds: 5)).then((value) => _client.buscarTransferencias()),
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
-
-          if (snapshot.hasData) {
-            switch(snapshot.connectionState) {
-              case ConnectionState.none:
-              case ConnectionState.active:
-                break;
-              case ConnectionState.waiting:
-                return Loading();
-              case ConnectionState.done:
+          switch(snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.active:
+              break;
+            case ConnectionState.waiting:
+              return Loading(textoLoading: 'Buscando transferências',);
+            case ConnectionState.done:
+              if (snapshot.hasData) {
                 final List<Transferencia> transferencias = snapshot.data;
 
                 if (transferencias.isNotEmpty) {
@@ -37,12 +36,12 @@ class ListaTransferencia extends StatelessWidget {
                     },
                   );
                 }
+              }
 
-                return MensagemCentralizada(
-                  'Nenhuma transação encontrada',
-                  icone: Icons.warning,
-                );
-            }
+              return MensagemCentralizada(
+                'Nenhuma transação encontrada',
+                icone: Icons.warning,
+              );
           }
 
           return MensagemCentralizada('Erro desconhecido');
