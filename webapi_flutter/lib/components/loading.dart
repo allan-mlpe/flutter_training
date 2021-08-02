@@ -14,7 +14,10 @@ class Loading extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircularProgressIndicator(),
-          Text(textoLoading)
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(textoLoading),
+          )
         ],
       ),
     );
