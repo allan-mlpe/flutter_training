@@ -20,14 +20,9 @@ class TransferenciaWebClient {
         .timeout(Duration(seconds: 5)); // adiciona timeout de 5s
 
     final List<dynamic> decodeJson = jsonDecode(response.body);
-    final List<Transferencia> transferencias = [];
 
-    // iteramos sobre a lista de JSON para fazer as conversões dos objetos
-    for(Map<String, dynamic> transferenciaJson in decodeJson) {
-      Transferencia transferencia = Transferencia.fromJson(transferenciaJson);
-
-      transferencias.add(transferencia);
-    }
+    final List<Transferencia> transferencias =
+      decodeJson.map((json) => Transferencia.fromJson(json)).toList();
 
     return transferencias;
   }
@@ -49,8 +44,6 @@ class TransferenciaWebClient {
         body: payloadJson
     );
 
-    final Map<String, dynamic> mapaResposta = jsonDecode(response.body);
-
-    return Transferencia.fromJson(mapaResposta);
+    return Transferencia.fromJson(jsonDecode(response.body));
   }
 }
