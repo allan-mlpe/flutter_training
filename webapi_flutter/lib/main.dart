@@ -4,7 +4,7 @@ import 'package:webapi_flutter/screens/dashboard.dart';
 
 void main() {
   runApp(BytebankApp());
-  buscarTudo();
+  buscarTransferencias();
 }
 
 class BytebankApp extends StatelessWidget {
