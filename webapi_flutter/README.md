@@ -13,5 +13,5 @@ Podemos utilizar o `jsonDecode` para converter de JSON para objeto. E `jsonEncod
   final Map<String, dynamic> objJson = jsonDecode(stringJson);
   
   // convertendo um objeto para JSON
-  final String json = jsonEncode(objeto);
+  final String json = jsonEncode(mapaObjeto);
   ```

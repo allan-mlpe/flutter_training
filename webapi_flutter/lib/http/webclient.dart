@@ -28,13 +28,15 @@ class LoggingInterceptor implements InterceptorContract {
 
 }
 
+final Uri BASE_URI = Uri.parse('http://192.168.0.19:8080/transactions');
+
 Future<List<Transferencia>> buscarTransferencias() async {
   Client client = InterceptedClient.build(interceptors: [
     LoggingInterceptor(),
   ]);
 
   var response =
-    await client.get(Uri.parse('http://192.168.0.19:8080/transactions'))
+    await client.get(BASE_URI)
         .timeout(Duration(seconds: 5)); // adiciona timeout de 5s
 
   final List<dynamic> decodeJson = jsonDecode(response.body);
@@ -42,20 +44,54 @@ Future<List<Transferencia>> buscarTransferencias() async {
 
   // iteramos sobre a lista de JSON para fazer as conversões dos objetos
   for(Map<String, dynamic> transferenciaJson in decodeJson) {
-    final Map<String, dynamic> contatoJson = transferenciaJson['contact'];
-    final Contato contato = Contato(
-      0,
-      contatoJson['name'],
-      contatoJson['accountNumber']
-    );
-
-    final Transferencia transferencia = Transferencia(
-      transferenciaJson['value'],
-      contato
-    );
+    Transferencia transferencia =
+      converterMapaParaTransferencia(transferenciaJson);
 
     transferencias.add(transferencia);
   }
 
   return transferencias;
+}
+
+Transferencia converterMapaParaTransferencia(Map<String, dynamic> transferenciaJson) {
+  final Map<String, dynamic> contatoJson = transferenciaJson['contact'];
+  final Contato contato = Contato(
+    0,
+    contatoJson['name'],
+    contatoJson['accountNumber']
+  );
+
+  final Transferencia transferencia = Transferencia(
+    transferenciaJson['value'],
+    contato
+  );
+  return transferencia;
+}
+
+Future<Transferencia> salvarTransferencia(Transferencia transferencia) async {
+  var client = InterceptedClient.build(interceptors: [
+    LoggingInterceptor()
+  ]);
+
+  final Map<String, dynamic> transferenciaMap = {
+    'value': transferencia.valor,
+    'contact': {
+      'name': transferencia.contato.nome,
+      'accountNumber': transferencia.contato.numeroConta
+    }
+  };
+
+  final String payloadJson = jsonEncode(transferenciaMap);
+
+  final Response response = await client.post(BASE_URI,
+    headers: {
+      'Content-type': 'application/json',
+      'password': '1000',
+    },
+    body: payloadJson
+  );
+
+  final Map<String, dynamic> mapaResposta = jsonDecode(response.body);
+
+  return converterMapaParaTransferencia(mapaResposta);
 }
