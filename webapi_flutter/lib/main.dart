@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:webapi_flutter/http/webclient.dart';
 import 'package:webapi_flutter/screens/dashboard.dart';
 
 void main() {
   runApp(BytebankApp());
+  buscarTudo();
 }
 
 class BytebankApp extends StatelessWidget {
