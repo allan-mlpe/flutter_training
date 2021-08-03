@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:webapi2_flutter/components/auth_transferencia_dialog.dart';
 import 'package:webapi2_flutter/http/webclients/transferencia_webclient.dart';
 import 'package:webapi2_flutter/models/contato.dart';
 import 'package:webapi2_flutter/models/transferencia.dart';
@@ -9,10 +10,12 @@ class FormularioNovaTransferencia extends StatefulWidget {
   FormularioNovaTransferencia(this.contato);
 
   @override
-  _FormularioNovaTransferenciaState createState() => _FormularioNovaTransferenciaState();
+  _FormularioNovaTransferenciaState createState() =>
+      _FormularioNovaTransferenciaState();
 }
 
-class _FormularioNovaTransferenciaState extends State<FormularioNovaTransferencia> {
+class _FormularioNovaTransferenciaState
+    extends State<FormularioNovaTransferencia> {
   final TextEditingController _valueController = TextEditingController();
   final TransferenciaWebClient _client = TransferenciaWebClient();
 
@@ -58,16 +61,25 @@ class _FormularioNovaTransferenciaState extends State<FormularioNovaTransferenci
                 child: SizedBox(
                   width: double.maxFinite,
                   child: ElevatedButton(
-                    child: Text('Transferir'), onPressed: () {
-                    final double? valor =
+                    child: Text('Transferir'),
+                    onPressed: () {
+                      final double? valor =
                           double.tryParse(_valueController.text);
 
-                      if (valor != null) {
-                        final transferenciaCriada =
-                            Transferencia(valor, widget.contato);
+                      showDialog(
+                          context: context,
+                          builder: (contextDialog) {
+                            return AuthTransferenciaDialog(
+                              onConfirm: (String password) {
+                                if (valor != null) {
+                                  final transferenciaCriada =
+                                      Transferencia(valor, widget.contato);
 
-                        _salvarTransferenciaENavegarParaLista(transferenciaCriada, context);
-                      }
+                                  _salvarTransferenciaENavegarParaLista(transferenciaCriada, password, context);
+                                }
+                              },
+                            );
+                          });
                     },
                   ),
                 ),
@@ -79,11 +91,10 @@ class _FormularioNovaTransferenciaState extends State<FormularioNovaTransferenci
     );
   }
 
-  void _salvarTransferenciaENavegarParaLista(Transferencia transferenciaCriada, BuildContext context) {
-    _client.salvarTransferencia(transferenciaCriada)
-        .then((transferencia) => {
-              if (transferencia != null)
-                {Navigator.pop(context)}
-            });
+  void _salvarTransferenciaENavegarParaLista(
+      Transferencia transferenciaCriada, String senha, BuildContext context) {
+    _client.salvarTransferencia(transferenciaCriada, senha).then((transferencia) => {
+          if (transferencia != null) {Navigator.pop(context)}
+        });
   }
 }

@@ -13,4 +13,14 @@
     - Dentro da propriedade `decoration`:
     
         - `border`: definir uma borda para o campo de texto.
-    
+- É importante fazer distinção dos contextos de cada widget para não ocorrer o acesso ao um
+contexto que já não existe mais na tela (isso é muito comum quando usamos dialogs). Uma estratégia interessante é nomear cada contexto com
+  um nome específico.
+  ```dart
+  showDialog(
+      context: context,
+      builder: (contextDialog) { // AQUI damos um nome específico ao contexto do dialog
+        return ...
+      });
+  ...
+  ```

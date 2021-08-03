@@ -27,7 +27,7 @@ class TransferenciaWebClient {
     return transferencias;
   }
 
-  Future<Transferencia> salvarTransferencia(Transferencia transferencia) async {
+  Future<Transferencia> salvarTransferencia(Transferencia transferencia, String senha) async {
     var client = InterceptedClient.build(interceptors: [
       LoggingInterceptor()
     ]);
@@ -39,7 +39,7 @@ class TransferenciaWebClient {
     final Response response = await client.post(BASE_URI,
         headers: {
           'Content-type': 'application/json',
-          'password': '1000',
+          'password': senha,
         },
         body: payloadJson
     );
