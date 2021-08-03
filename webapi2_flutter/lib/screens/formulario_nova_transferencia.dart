@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webapi2_flutter/components/auth_transferencia_dialog.dart';
+import 'package:webapi2_flutter/components/mensagem_dialog.dart';
 import 'package:webapi2_flutter/http/webclients/transferencia_webclient.dart';
 import 'package:webapi2_flutter/models/contato.dart';
 import 'package:webapi2_flutter/models/transferencia.dart';
@@ -93,8 +94,14 @@ class _FormularioNovaTransferenciaState
 
   void _salvarTransferenciaENavegarParaLista(
       Transferencia transferenciaCriada, String senha, BuildContext context) {
-    _client.salvarTransferencia(transferenciaCriada, senha).then((transferencia) => {
+    _client.salvarTransferencia(transferenciaCriada, senha)
+        .then((transferencia) => {
           if (transferencia != null) {Navigator.pop(context)}
-        });
+        }).catchError((e) {
+          // se houver um erro, abre um dialog de erro
+          showDialog(context: context, builder: (contextDialog) {
+            return FailureDialog(e.message);
+          });
+        }, test: (e) => e is Exception); // verifica se `e` é uma instância de Exception
   }
 }

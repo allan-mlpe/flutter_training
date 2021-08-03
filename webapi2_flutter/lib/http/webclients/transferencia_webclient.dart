@@ -44,6 +44,12 @@ class TransferenciaWebClient {
         body: payloadJson
     );
 
+    if (response.statusCode == 400) {
+      throw Exception('Dados da trasnferências inválidos.');
+    } else if (response.statusCode == 401) {
+      throw Exception('Senha inválida.');
+    }
+
     return Transferencia.fromJson(jsonDecode(response.body));
   }
 }
