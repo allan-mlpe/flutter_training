@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:webapi2_flutter/components/auth_transferencia_dialog.dart';
 import 'package:webapi2_flutter/screens/dashboard.dart';
 
 void main() {
@@ -18,7 +19,7 @@ class BytebankApp extends StatelessWidget {
           textTheme: ButtonTextTheme.primary,
         ),
       ),
-      home: Dashboard(),
+      home: AuthTransferenciaDialog(),
     );
   }
 }
