@@ -1,9 +1,8 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:http_interceptor/http_interceptor.dart';
 
-import 'package:webapi2_flutter/http/interceptors/logging_interceptor.dart';
+import 'package:webapi2_flutter/http/webclient.dart';
 import 'package:webapi2_flutter/models/transferencia.dart';
 
 
@@ -11,13 +10,7 @@ class TransferenciaWebClient {
   final Uri baseUri = Uri.parse('http://192.168.0.19:8080/transactions');
 
   Future<List<Transferencia>> buscarTransferencias() async {
-    Client client = InterceptedClient.build(interceptors: [
-      LoggingInterceptor(),
-    ]);
-
-    var response =
-    await client.get(baseUri)
-        .timeout(Duration(seconds: 5)); // adiciona timeout de 5s
+    var response = await apiClient.get(baseUri);
 
     final List<dynamic> decodeJson = jsonDecode(response.body);
 
@@ -28,15 +21,11 @@ class TransferenciaWebClient {
   }
 
   Future<Transferencia> salvarTransferencia(Transferencia transferencia, String senha) async {
-    var client = InterceptedClient.build(interceptors: [
-      LoggingInterceptor()
-    ]);
-
     Map<String, dynamic> transferenciaMap = transferencia.toJson();
 
     final String payloadJson = jsonEncode(transferenciaMap);
 
-    final Response response = await client.post(baseUri,
+    final Response response = await apiClient.post(baseUri,
         headers: {
           'Content-type': 'application/json',
           'password': senha,
