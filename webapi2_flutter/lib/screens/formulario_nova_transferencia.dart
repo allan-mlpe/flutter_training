@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
+
 import 'package:webapi2_flutter/components/auth_transferencia_dialog.dart';
 import 'package:webapi2_flutter/components/mensagem_dialog.dart';
 import 'package:webapi2_flutter/http/webclients/transferencia_webclient.dart';
@@ -21,6 +23,8 @@ class _FormularioNovaTransferenciaState
     extends State<FormularioNovaTransferencia> {
   final TextEditingController _valueController = TextEditingController();
   final TransferenciaWebClient _client = TransferenciaWebClient();
+
+  final String idTransferencia = Uuid().v4();
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +80,7 @@ class _FormularioNovaTransferenciaState
                               onConfirm: (String password) {
                                 if (valor != null) {
                                   final transferenciaCriada =
-                                      Transferencia(valor, widget.contato);
+                                      Transferencia(idTransferencia, valor, widget.contato);
 
                                   _salvarTransferenciaENavegarParaLista(transferenciaCriada, password, context);
                                 }

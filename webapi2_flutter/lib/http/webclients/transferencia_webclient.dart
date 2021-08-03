@@ -26,6 +26,8 @@ class TransferenciaWebClient {
 
     final String payloadJson = jsonEncode(transferenciaMap);
 
+    await Future.delayed(Duration(seconds: 10));
+
     final Response response = await apiClient.post(baseUri,
         headers: {
           'Content-type': 'application/json',
@@ -38,12 +40,17 @@ class TransferenciaWebClient {
       return Transferencia.fromJson(jsonDecode(response.body));
     }
 
-    throw ApiHttpException(message: _mapaErrosHttp[response.statusCode]);
+    throw ApiHttpException(message: _obterMensagemErro(response.statusCode));
+  }
+
+  String _obterMensagemErro(int statusCode) {
+    return _mapaErrosHttp[statusCode] ?? 'Erro inesperado';
   }
 
   static final Map<int, String> _mapaErrosHttp = {
     400: 'Dados da trasnferências inválidos.',
     401: 'Senha inválida.',
+    409: 'Transferência duplicada!'
   };
 }
 
