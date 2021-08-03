@@ -8,7 +8,7 @@ import 'package:webapi2_flutter/models/transferencia.dart';
 
 
 class TransferenciaWebClient {
-  final Uri BASE_URI = Uri.parse('http://192.168.0.19:8080/transactions');
+  final Uri baseUri = Uri.parse('http://192.168.0.19:8080/transactions');
 
   Future<List<Transferencia>> buscarTransferencias() async {
     Client client = InterceptedClient.build(interceptors: [
@@ -16,7 +16,7 @@ class TransferenciaWebClient {
     ]);
 
     var response =
-    await client.get(BASE_URI)
+    await client.get(baseUri)
         .timeout(Duration(seconds: 5)); // adiciona timeout de 5s
 
     final List<dynamic> decodeJson = jsonDecode(response.body);
@@ -36,7 +36,7 @@ class TransferenciaWebClient {
 
     final String payloadJson = jsonEncode(transferenciaMap);
 
-    final Response response = await client.post(BASE_URI,
+    final Response response = await client.post(baseUri,
         headers: {
           'Content-type': 'application/json',
           'password': senha,
@@ -44,12 +44,15 @@ class TransferenciaWebClient {
         body: payloadJson
     );
 
-    if (response.statusCode == 400) {
-      throw Exception('Dados da trasnferências inválidos.');
-    } else if (response.statusCode == 401) {
-      throw Exception('Senha inválida.');
+    if (response.statusCode == 200) {
+      return Transferencia.fromJson(jsonDecode(response.body));
     }
 
-    return Transferencia.fromJson(jsonDecode(response.body));
+    throw Exception(_mapaErrosHttp[response.statusCode]);
   }
+
+  static final Map<int, String> _mapaErrosHttp = {
+    400: 'Dados da trasnferências inválidos.',
+    401: 'Senha inválida.',
+  };
 }

@@ -93,15 +93,21 @@ class _FormularioNovaTransferenciaState
   }
 
   void _salvarTransferenciaENavegarParaLista(
-      Transferencia transferenciaCriada, String senha, BuildContext context) {
-    _client.salvarTransferencia(transferenciaCriada, senha)
-        .then((transferencia) => {
-          if (transferencia != null) {Navigator.pop(context)}
-        }).catchError((e) {
+      Transferencia transferenciaCriada, String senha, BuildContext context) async {
+
+    final Transferencia transferencia = await
+      _client.salvarTransferencia(transferenciaCriada, senha)
+        .catchError((e) {
           // se houver um erro, abre um dialog de erro
           showDialog(context: context, builder: (contextDialog) {
             return FailureDialog(e.message);
           });
         }, test: (e) => e is Exception); // verifica se `e` é uma instância de Exception
+
+    if (transferencia != null) {
+      showDialog(context: context, builder: (dialogContext) {
+        return SuccessDialog('Transferência realizada com sucesso!');
+      }).then((value) => Navigator.pop(context));
+    }
   }
 }

@@ -70,7 +70,7 @@ class SuccessDialog extends StatelessWidget {
 
   SuccessDialog(
     this.message, {
-    this.title = 'Success',
+    this.title = 'Successo',
     this.icon = Icons.done,
   });
 
@@ -92,7 +92,7 @@ class FailureDialog extends StatelessWidget {
 
   FailureDialog(
     this.message, {
-    this.title = 'Failure',
+    this.title = 'Erro',
     this.icon = Icons.warning,
   });
 
