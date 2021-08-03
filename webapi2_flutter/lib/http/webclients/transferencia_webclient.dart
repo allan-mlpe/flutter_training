@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart';
@@ -37,11 +38,17 @@ class TransferenciaWebClient {
       return Transferencia.fromJson(jsonDecode(response.body));
     }
 
-    throw Exception(_mapaErrosHttp[response.statusCode]);
+    throw ApiHttpException(message: _mapaErrosHttp[response.statusCode]);
   }
 
   static final Map<int, String> _mapaErrosHttp = {
     400: 'Dados da trasnferências inválidos.',
     401: 'Senha inválida.',
   };
+}
+
+class ApiHttpException implements Exception {
+  final String? message;
+
+  ApiHttpException({this.message = 'Erro desconhecido'});
 }

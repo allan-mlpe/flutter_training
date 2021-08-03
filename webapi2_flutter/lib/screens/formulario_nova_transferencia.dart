@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:webapi2_flutter/components/auth_transferencia_dialog.dart';
 import 'package:webapi2_flutter/components/mensagem_dialog.dart';
@@ -99,15 +101,27 @@ class _FormularioNovaTransferenciaState
       _client.salvarTransferencia(transferenciaCriada, senha)
         .catchError((e) {
           // se houver um erro, abre um dialog de erro
-          showDialog(context: context, builder: (contextDialog) {
-            return FailureDialog(e.message);
-          });
-        }, test: (e) => e is Exception); // verifica se `e` é uma instância de Exception
+          _exibirDialogDeErro(context, message: e.message);
+        }, test: (e) => e is ApiHttpException) // verifica se `e` é uma instância de Exception
+        .catchError((e) {
+          _exibirDialogDeErro(
+            context, message: 'O servidor demorou muito a responder');
+        }, test: (e) => e is TimeoutException)
+        .catchError((e) {
+          _exibirDialogDeErro(context);
+        }, test: (e) => e is Exception);
 
     if (transferencia != null) {
       showDialog(context: context, builder: (dialogContext) {
         return SuccessDialog('Transferência realizada com sucesso!');
       }).then((value) => Navigator.pop(context));
     }
+  }
+
+  void _exibirDialogDeErro(BuildContext context,
+      {String message = 'Erro desconhecido'}) {
+    showDialog(context: context, builder: (contextDialog) {
+      return FailureDialog(message);
+    });
   }
 }
