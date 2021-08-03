@@ -16,19 +16,22 @@ class Dashboard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Image.asset('images/bytebank_logo.png'),
-            Row(
-              children: [
-                _FeatureCard(
-                  'Transferências',
-                  Icons.monetization_on,
-                  onClick: () => _navegarParaListaContatos(context),
-                ),
-                _FeatureCard(
-                  'Feed', 
-                  Icons.description, 
-                  onClick: () => _navegarParaListaTransferencias(context),
-                )
-              ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  _FeatureCard(
+                    'Transferências',
+                    Icons.monetization_on,
+                    onClick: () => _navegarParaListaContatos(context),
+                  ),
+                  _FeatureCard(
+                    'Feed',
+                    Icons.description,
+                    onClick: () => _navegarParaListaTransferencias(context),
+                  )
+                ],
+              ),
             )
           ],
         ),
