@@ -26,8 +26,6 @@ class TransferenciaWebClient {
 
     final String payloadJson = jsonEncode(transferenciaMap);
 
-    await Future.delayed(Duration(seconds: 10));
-
     final Response response = await apiClient.post(baseUri,
         headers: {
           'Content-type': 'application/json',

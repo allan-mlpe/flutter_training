@@ -24,3 +24,25 @@ contexto que já não existe mais na tela (isso é muito comum quando usamos dia
       });
   ...
   ```
+  
+- Podemos capturar erros em um `Future` com o `catchError`. Além disso, podemos encadear vários `catchError`'s:
+  ```dart
+  metodoQueRetornaFuture()
+    .catchError((e) {
+      // tratamento de erro 1
+    }, test: (e) => e is ApiHttpException) // verifica se `e` é uma instância de ApiHttpException
+    .catchError((e) {
+      // tratamento de erro 2
+    }, test: (e) => e is TimeoutException); // verifica se `e` é uma instância de TimeoutException
+  ...
+  ```
+- Para executar uma ação ao finalizar o `Future` podemos usar o `whenComplete`.
+  ```dart
+    metodoQueRetornaFuture()
+        .catchError((e) {
+          ...
+        }).whenComplete(() => {
+          ...
+        });
+    ...
+  ```

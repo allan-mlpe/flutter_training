@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:webapi2_flutter/components/auth_transferencia_dialog.dart';
+import 'package:webapi2_flutter/components/loading.dart';
 import 'package:webapi2_flutter/components/mensagem_dialog.dart';
 import 'package:webapi2_flutter/http/webclients/transferencia_webclient.dart';
 import 'package:webapi2_flutter/models/contato.dart';
@@ -26,6 +27,8 @@ class _FormularioNovaTransferenciaState
 
   final String idTransferencia = Uuid().v4();
 
+  bool carregando = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +41,10 @@ class _FormularioNovaTransferenciaState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Visibility(
+                child: Loading(),
+                visible: carregando,
+              ),
               Text(
                 widget.contato.nome,
                 style: TextStyle(
@@ -67,27 +74,30 @@ class _FormularioNovaTransferenciaState
                 padding: const EdgeInsets.only(top: 16.0),
                 child: SizedBox(
                   width: double.maxFinite,
-                  child: ElevatedButton(
-                    child: Text('Transferir'),
-                    onPressed: () {
-                      final double? valor =
-                          double.tryParse(_valueController.text);
+                  child: Visibility(
+                    visible: !carregando,
+                    child: ElevatedButton(
+                      child: Text('Transferir'),
+                      onPressed: () {
+                        final double? valor =
+                            double.tryParse(_valueController.text);
 
-                      showDialog(
-                          context: context,
-                          builder: (contextDialog) {
-                            return AuthTransferenciaDialog(
-                              onConfirm: (String password) {
-                                if (valor != null) {
-                                  final transferenciaCriada =
-                                      Transferencia(idTransferencia, valor, widget.contato);
+                        showDialog(
+                            context: context,
+                            builder: (contextDialog) {
+                              return AuthTransferenciaDialog(
+                                onConfirm: (String password) {
+                                  if (valor != null) {
+                                    final transferenciaCriada =
+                                        Transferencia(idTransferencia, valor, widget.contato);
 
-                                  _salvarTransferenciaENavegarParaLista(transferenciaCriada, password, context);
-                                }
-                              },
-                            );
-                          });
-                    },
+                                    _salvarTransferenciaENavegarParaLista(transferenciaCriada, password, context);
+                                  }
+                                },
+                              );
+                            });
+                      },
+                    ),
                   ),
                 ),
               )
@@ -101,19 +111,26 @@ class _FormularioNovaTransferenciaState
   void _salvarTransferenciaENavegarParaLista(
       Transferencia transferenciaCriada, String senha, BuildContext context) async {
 
+    setState(() {
+      carregando = true;
+    });
+
     final Transferencia transferencia = await
       _client.salvarTransferencia(transferenciaCriada, senha)
         .catchError((e) {
           // se houver um erro, abre um dialog de erro
           _exibirDialogDeErro(context, message: e.message);
-        }, test: (e) => e is ApiHttpException) // verifica se `e` é uma instância de Exception
+        }, test: (e) => e is ApiHttpException) // verifica se `e` é uma instância de ApiHttpException
         .catchError((e) {
           _exibirDialogDeErro(
             context, message: 'O servidor demorou muito a responder');
         }, test: (e) => e is TimeoutException)
         .catchError((e) {
           _exibirDialogDeErro(context);
-        }, test: (e) => e is Exception);
+        }, test: (e) => e is Exception)
+        .whenComplete(() => setState(() {
+          carregando = false;
+        }));
 
     if (transferencia != null) {
       showDialog(context: context, builder: (dialogContext) {
